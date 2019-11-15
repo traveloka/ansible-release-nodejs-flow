@@ -1,0 +1,5 @@
+---
+s3_bucket: "traveloka-builds"
+s3_path: "{{ service_name }}/bin/{{ service_version }}/{{ service_version }}.zip"
+target_path: "/home/ubuntu/{{ service_name }}"
+target_filename: "{{ service_version }}.zip"

@@ -1,0 +1,6 @@
+---
+dependencies:
+  - npm-stop
+  - s3-deploy-object
+  - unarchive-cleanup
+  - npm-start
