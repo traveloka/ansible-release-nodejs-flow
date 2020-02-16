@@ -13,9 +13,16 @@
     path: "/var/traveloka/log/{{ app_name }}_error.log"
     state: touch
 
+- name: Get Datadog API key
+  shell: awsudo -u tvlk_dev_ct_super_admin -- aws ssm get-parameters --name /tvlk-secret/shared/bei/datadog.api.key --with-decryption --query Parameters[0].Value --output text --region ap-southeast-1
+  register: datadog_api_key
+
 - name: Insert API key to datadog.conf
-  shell: |
-    sed -i -e "s@api_key:.*@api_key: $(aws ssm get-parameters --name /tvlk-secret/shared/bei/datadog.api.key --with-decryption --query Parameters[0].Value --output text --region ap-southeast-1)@" /etc/dd-agent/datadog.conf
+  lineinfile:
+    state: present
+    path: /etc/dd-agent/datadog.conf
+    regexp: ^api_key.*$
+    line: "api_key: {{ datadog_api_key.stdout }}"
 
 - name: Restart Datadog agent
   systemd:
