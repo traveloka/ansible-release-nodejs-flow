@@ -1,4 +1,3 @@
----
 - name: Create log files for CloudWatch to pick-up
   file:
     path: "/var/traveloka/log/{{ app_name }}_out.log"
