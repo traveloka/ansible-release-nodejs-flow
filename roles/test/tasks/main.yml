@@ -14,7 +14,7 @@
     state: touch
 
 - name: Get Datadog API key
-  shell: awsudo -u tvlk_dev_ct_super_admin -- aws ssm get-parameters --name /tvlk-secret/shared/bei/datadog.api.key --with-decryption --query Parameters[0].Value --output text --region ap-southeast-1
+  shell: aws ssm get-parameters --name /tvlk-secret/shared/bei/datadog.api.key --with-decryption --query Parameters[0].Value --output text --region ap-southeast-1
   register: datadog_api_key
 
 - name: Insert API key to datadog.conf
