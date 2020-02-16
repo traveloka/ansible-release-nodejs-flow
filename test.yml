@@ -1,6 +1,0 @@
----
-- hosts: localhost
-  vars:
-    app_name: entpwwpfe
-  roles:
-    - test
