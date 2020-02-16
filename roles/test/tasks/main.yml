@@ -1,3 +1,8 @@
+- name: Create directory for log files
+  file:
+    path: /var/traveloka/log/
+    state: directory
+
 - name: Create log files for CloudWatch to pick-up
   file:
     path: "/var/traveloka/log/{{ app_name }}_out.log"
@@ -8,7 +13,11 @@
     path: "/var/traveloka/log/{{ app_name }}_error.log"
     state: touch
 
-- name: Insert Datadog API key from Parameter store to datadog.conf
+- name: Insert API key to datadog.conf
   shell: |
     sed -i -e "s@api_key:.*@api_key: $(aws ssm get-parameters --name /tvlk-secret/shared/bei/datadog.api.key --with-decryption --query Parameters[0].Value --output text --region ap-southeast-1)@" /etc/dd-agent/datadog.conf
-    systemctl restart datadog-agent
+
+- name: Restart Datadog agent
+  systemd:
+    state: restarted
+    name: datadog-agent
