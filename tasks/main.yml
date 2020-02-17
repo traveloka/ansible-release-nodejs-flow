@@ -2,16 +2,22 @@
   file:
     path: /var/traveloka/log/
     state: directory
+    mode: u=rwx,g=rwx,o=rwx
+  become: yes
 
 - name: Create log files for CloudWatch to pick-up
   file:
     path: "/var/traveloka/log/{{ app_name }}_out.log"
     state: touch
+    mode: u=rwx,g=rwx,o=rwx
+  become: yes
 
 - name: Create log files for CloudWatch to pick-up
   file:
     path: "/var/traveloka/log/{{ app_name }}_error.log"
     state: touch
+    mode: u=rwx,g=rwx,o=rwx
+  become: yes
 
 - name: Get Datadog API key
   shell: aws ssm get-parameters --name /tvlk-secret/shared/bei/datadog.api.key --with-decryption --query Parameters[0].Value --output text --region ap-southeast-1
