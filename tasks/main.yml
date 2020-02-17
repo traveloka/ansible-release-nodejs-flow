@@ -18,19 +18,3 @@
     state: touch
     mode: u=rwx,g=rwx,o=rwx
   become: yes
-
-- name: Get Datadog API key
-  shell: aws ssm get-parameters --name /tvlk-secret/shared/bei/datadog.api.key --with-decryption --query Parameters[0].Value --output text --region ap-southeast-1
-  register: datadog_api_key
-
-- name: Insert API key to datadog.conf
-  lineinfile:
-    state: present
-    path: /etc/dd-agent/datadog.conf
-    regexp: ^api_key.*$
-    line: "api_key: {{ datadog_api_key.stdout }}"
-
-- name: Restart Datadog agent
-  systemd:
-    state: restarted
-    name: datadog-agent
